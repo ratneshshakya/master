@@ -1,0 +1,322 @@
+---
+openapi: "3.0.1"
+info:
+  title: "account connector API"
+  description: "Accounts API to handle accounts of a third party"
+  version: "v1"
+servers:
+- url: "http://dxp-private-k8nde.lb"
+tags:
+- name: "accounts"
+  description: "Accounts API"
+paths:
+  /api/v1/accounts/{accountId}:
+    get:
+      tags:
+      - "accounts"
+      - "UnAuthorized Access"
+      summary: "The core banking must return the details of a bank account for which\
+        \ the end user has given their consent."
+      description: "Get details of an account"
+      operationId: "find_account_details_by_psuId_accountId"
+      parameters:
+      - name: "accountId"
+        in: "path"
+        description: "Account Id"
+        required: true
+        schema:
+          type: "string"
+      - name: "psuId"
+        in: "query"
+        description: "User Id"
+        required: true
+        schema:
+          type: "string"
+      - name: "Authorization"
+        in: "header"
+        description: "Holds Bearer information"
+        required: true
+        schema:
+          type: "string"
+        example: "Bearer rauru"
+      responses:
+        "200":
+          description: "200"
+          headers:
+            Cache-Control:
+              description: "Holds directives instructions for caching"
+              schema:
+                type: "string"
+            Content-Length:
+              description: "Indicates the size of the entity-body, in bytes, sent\
+                \ to the recipient"
+              schema:
+                type: "string"
+            Content-Type:
+              description: "Media type of the payload"
+              schema:
+                type: "string"
+            Expires:
+              description: "Contains the date/time after which the response is considered\
+                \ stale"
+              schema:
+                type: "string"
+            Set-Cookie:
+              description: "Used to send cookies from the server to the user agent,\
+                \ so the user agent can send them back to the server later"
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/account"
+              examples:
+                find_account_details_by_psuId_accountId:
+                  value: "{\r\n  \"id\" : \"1aa8b59d9886b25df9ebe94b\",\r\n  \"label\"\
+                    \ : \"Current Account\",\r\n  \"currency\" : \"EUR\",\r\n  \"\
+                    access\" : \"FULL\",\r\n  \"authorityType\" : \"ACCOUNT_HOLDER\"\
+                    ,\r\n  \"cashAccountType\" : \"ODFT\",\r\n  \"cashAccountTypeProprietary\"\
+                    \ : \"proprietary\",\r\n  \"cashAccountTypeLabel\" : \"Current\
+                    \ account\",\r\n  \"title\" : \"Current account\",\r\n  \"references\"\
+                    \ : [ {\r\n    \"id\" : \"BE35999000297437\",\r\n    \"type\"\
+                    \ : \"IBAN\"\r\n  }, {\r\n    \"id\" : \"999000297437\",\r\n \
+                    \   \"type\" : \"IBAN\"\r\n  } ],\r\n  \"balances\" : [ {\r\n\
+                    \    \"creditDebitIndicator\" : \"DEBIT\",\r\n    \"type\" : \"\
+                    INTERIM_AVAILABLE\",\r\n    \"dateTime\" : \"\",\r\n    \"amount\"\
+                    \ : {\r\n      \"amount\" : \"100.00\",\r\n      \"currency\"\
+                    \ : \"EUR\"\r\n    }\r\n  } ]\r\n}"
+        "403":
+          description: "403"
+          headers:
+            Cache-Control:
+              description: "Holds directives instructions for caching"
+              schema:
+                type: "string"
+            Content-Length:
+              description: "Indicates the size of the entity-body, in bytes, sent\
+                \ to the recipient"
+              schema:
+                type: "string"
+            Content-Type:
+              description: "Media type of the payload"
+              schema:
+                type: "string"
+            Expires:
+              description: "Contains the date/time after which the response is considered\
+                \ stale"
+              schema:
+                type: "string"
+            Set-Cookie:
+              description: "Used to send cookies from the server to the user agent,\
+                \ so the user agent can send them back to the server later"
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+              examples:
+                find_account_details_insufficient_permission:
+                  value: "{\r\n  \"returnCode\" : \"ERROR\",\r\n  \"traceId\" : \"\
+                    e0338af1ad349984\",\r\n  \"ticketId\" : \"gwvr5a\",\r\n  \"feedbacks\"\
+                    \ : [ {\r\n    \"code\" : \"INSUFFICIENT_PERMISSION\",\r\n   \
+                    \ \"label\" : \"Client does not have sufficient permission. This\
+                    \ can happen because the user doesn't match the type of users\
+                    \ supported by this API.\",\r\n    \"severity\" : \"ERROR\",\r\
+                    \n    \"type\" : \"SEC\",\r\n    \"spanId\" : \"e0338af1ad349984\"\
+                    ,\r\n    \"origin\" : \"account-connector\",\r\n    \"parameters\"\
+                    \ : [ ],\r\n    \"internal\" : {\r\n      \"message\" : \"Wrong\
+                    \ sub type\",\r\n      \"parameters\" : [ ]\r\n    }\r\n  } ]\r\
+                    \n}"
+        "404":
+          description: "404"
+          headers:
+            Cache-Control:
+              description: "Holds directives instructions for caching"
+              schema:
+                type: "string"
+            Content-Length:
+              description: "Indicates the size of the entity-body, in bytes, sent\
+                \ to the recipient"
+              schema:
+                type: "string"
+            Content-Type:
+              description: "Media type of the payload"
+              schema:
+                type: "string"
+            Expires:
+              description: "Contains the date/time after which the response is considered\
+                \ stale"
+              schema:
+                type: "string"
+            Set-Cookie:
+              description: "Used to send cookies from the server to the user agent,\
+                \ so the user agent can send them back to the server later"
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+              examples:
+                find_account_details_notfound:
+                  value: "{\r\n  \"returnCode\" : \"ERROR\",\r\n  \"traceId\" : \"\
+                    44bb184b0db3465e\",\r\n  \"ticketId\" : \"3ppk6p\",\r\n  \"feedbacks\"\
+                    \ : [ {\r\n    \"code\" : \"RESOURCE_NOT_FOUND\",\r\n    \"label\"\
+                    \ : \"The specified resource does not exist\",\r\n    \"severity\"\
+                    \ : \"ERROR\",\r\n    \"type\" : \"BUS\",\r\n    \"spanId\" :\
+                    \ \"44bb184b0db3465e\",\r\n    \"origin\" : \"account-connector\"\
+                    ,\r\n    \"source\" : \"GetAccountDetailsResponse.questions#size\"\
+                    ,\r\n    \"parameters\" : [ ],\r\n    \"internal\" : {\r\n   \
+                    \   \"message\" : \"No account with account-id [1aa8b59d9886b25df9ebe94c]\
+                    \ found related to user [ID_PSU_SIGMUND]\",\r\n      \"parameters\"\
+                    \ : [ ]\r\n    }\r\n  } ]\r\n}"
+components:
+  schemas:
+    error:
+      title: "error"
+      required:
+      - "returnCode"
+      - "traceId"
+      type: "object"
+      properties:
+        traceId:
+          type: "string"
+          description: "Request trace identifier. Up to 36 characters"
+        returnCode:
+          type: "string"
+          description: "Represents highest severity among all feedbacks. Can be one\
+            \ of: OK, WARN, ERROR, INFO"
+        feedbacks:
+          type: "array"
+          description: "Array of feedbacks which caused the error"
+          items:
+            required:
+            - "code"
+            - "label"
+            - "severity"
+            - "type"
+            type: "object"
+            properties:
+              spanId:
+                type: "string"
+                description: "Request span identifier. Up to 256 characters"
+              severity:
+                type: "string"
+                description: "Severity of the feedback. Can be one of: ERROR stops\
+                  \ the treatment, WARN does not stop the treatment but can have an\
+                  \ impact on it, INFO additional information sent to the consumer,\
+                  \ FATAL alias for ERROR for non-Rest APIs  "
+              code:
+                type: "string"
+                description: "Identifier of the feedback like SB_XX_INTERNALCODE where\
+                  \ XX is the short application code and INTERNALCODE is the unique\
+                  \ feedback's code for the application. Up to 50 characters"
+              origin:
+                type: "string"
+                description: "Short application code at the origin of this feedback"
+              source:
+                type: "string"
+                description: "Source of the feedback: path of the resource/attribute\
+                  \ that caused the feedback like client.firstname. Up to 256 characters"
+              label:
+                type: "string"
+                description: "Internationalized label of the feedback (english only\
+                  \ for unexpected error). Up to 256 characters"
+              type:
+                type: "string"
+                description: "Type of the feedback. Can be one of: TEC unexpected\
+                  \ technical error, SEC security related error, BUS intended business\
+                  \ error"
+              parameters:
+                type: "array"
+                description: "Additional parameters related to this feedback"
+                items:
+                  required:
+                  - "code"
+                  - "value"
+                  type: "object"
+                  properties:
+                    code:
+                      type: "string"
+                      description: "Unique parameter code. Up to 10 characters"
+                    value:
+                      type: "string"
+                      description: "Parameter value. Up to 50 characters"
+        ticketId:
+          type: "string"
+          description: "Error auto generated identifier. Up to 36 characters"
+    account:
+      title: "account"
+      type: "object"
+      properties:
+        cashAccountType:
+          type: "string"
+          description: "ISO code of the cash account type. Allowed values: CACC, SVGS,\
+            \ ODFT, TRAS, LLSV, OTHR"
+        balances:
+          type: "array"
+          description: "List of current balances of an account"
+          items:
+            type: "object"
+            properties:
+              dateTime:
+                type: "string"
+                description: "Date of the balance - OffsetDateTime with this format:\
+                  \ 'yyyy-MM-dd’T’hh:mm:ss.sss(Z+01:00)'"
+              amount:
+                type: "object"
+                properties:
+                  amount:
+                    type: "string"
+                    description: "Account balance"
+                  currency:
+                    type: "string"
+                    description: "Account currency"
+                description: "Amount available"
+              type:
+                type: "string"
+                description: "Balance type. Allowed values: CLOSING_AVAILABLE, CLOSING_BOOKED,\
+                  \ EXPECTED, FORWARD_AVAILABLE, INFORMATION, INTERIM_AVAILABLE, INTERIM_BOOKED,\
+                  \ OPENING_AVAILABLE, OPENING_BOOKED, PREVIOUSLY_CLOSED_BOOKED"
+              creditDebitIndicator:
+                type: "string"
+                description: "Credit or Debit indicator. Allowed values: CREDIT, DEBIT"
+        access:
+          type: "string"
+          description: "Access type. Allowed values : NO, READ, FULL"
+        references:
+          type: "array"
+          description: "List of References"
+          items:
+            type: "object"
+            properties:
+              id:
+                type: "string"
+                description: "The account reference of the end user \nPattern: ^[a-zA-Z0-9]{1,35}$"
+              type:
+                type: "string"
+                description: "Name of the identification scheme, in a coded form as\
+                  \ published in an external list"
+        cashAccountTypeLabel:
+          type: "string"
+          description: "Cash account type label"
+        currency:
+          type: "string"
+          description: "Currency.\nPattern: ISO-4217 Codes"
+        label:
+          type: "string"
+          description: "Account name"
+        id:
+          type: "string"
+          description: "Unique identifier of the account.\nPattern: ^[a-zA-Z0-9]{1,20}$"
+        title:
+          type: "string"
+          description: "Account title"
+        cashAccountTypeProprietary:
+          type: "string"
+          description: "Proprietary code of the cash account type"
+        authorityType:
+          type: "string"
+          description: "Authority type. Allowed values : ACCOUNT_HOLDER, PROXY, JOINT_ACCOUNT_HOLDER,\
+            \ OTHER"
